@@ -10,6 +10,16 @@ function isLoggedIn(){
     }
 }
 
+//fungsi cek admin atau ketua
+function perm_audit(){
+	if ($_SESSION['user']['pegawai_jabatan']==1||$_SESSION['user']['pegawai_jabatan']==0) {
+		return true;
+	}else{
+		return false;
+	}
+	
+}
+
 //fungsi login
 function login($nmr,$pwd){
     $login =
@@ -119,12 +129,15 @@ function get_alatpelindung($unit=null){
 }
 
 //select audit
-function get_audit(){
+function get_audit($id=null){
 	$audit=
 		"SELECT 
 			*
 		from 
 			audit";
+	if(!is_null($id)){
+		$audit.=" where audit_id=".$id;
+	}
 	$audit_R=pg_query($audit);
 	return $audit_R;
 }
@@ -159,6 +172,21 @@ function get_pegawai(){
 			*
 		from 
 			pegawai
+		order by
+			pegawai_jabatan";
+	$pegawai_R=pg_query($pegawai);
+	return $pegawai_R;
+}
+
+//select pegawai ipcn/surveyor
+function get_surveyor(){
+	$pegawai=
+		"SELECT 
+			*
+		from 
+			pegawai
+		where
+			pegawai_jabatan=2
 		order by
 			pegawai_jabatan";
 	$pegawai_R=pg_query($pegawai);
@@ -266,6 +294,120 @@ function audit_act($view){
 		$_GET['view']=='unit'
 	){
 		return 2;
+	}
+}
+
+//get url
+function get_url(){
+	$url=(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+	return $url;
+}
+
+//get month now
+function monthnow(){
+	return date("Y-m");
+}
+
+//new record
+function new_record($ruang,$bulan,$pegawai,$audit){
+	if(is_null($ruang)){
+		$ruangan="null";
+	}
+	else{
+		$ruangan="'".$ruang."'";
+	}
+	$query="insert into record values('".$bulan.$ruang.$audit."','".$bulan."',".$ruangan.",'{}','".$pegawai."',".$audit.")";
+	return pg_query($query);
+}
+
+//make hasil
+function new_hasil($ruang,$bulan,$audit){
+	$tipe=pg_query("select audit_tipe from audit where audit_id=$audit");
+	$tipean=pg_fetch_array($tipe);
+	if($tipean['audit_tipe']==1){
+		$audit_1=
+		"SELECT 
+			* 
+		from 
+			komponen 
+		where 
+			audit_id=$audit";
+		$audit_1_R=pg_query($audit_1);
+		while($audit_1an=pg_fetch_array($audit_1_R)){
+			$insert1=
+			"INSERT into 
+				hasiltipe1 
+			values ( 
+				'".$bulan.$ruang.$audit_1an['komponen_id']."',
+				".$audit_1an['komponen_id'].",
+				'{}',
+				'".$bulan.$ruang.$audit."')";
+			pg_query($insert1);
+		}
+		return true;
+	}
+	else if($tipean['audit_tipe']==2){
+		$audit_2=
+		"SELECT 
+			*
+		from 
+			subkomponen 
+		join 
+			komponen on
+				komponen.komponen_id=subkomponen.komponen_id
+		join 
+			audit on 
+				komponen.audit_id=audit.audit_id
+		join 
+			unit on
+				audit.audit_id=unit.audit_id
+		join
+			alatpelindung on
+				alatpelindung.unit_id=unit.unit_id
+		where 
+			komponen.audit_id=$audit";
+		$audit_2_R=pg_query($audit_2);
+		while($audit_2an=pg_fetch_array($audit_2_R)){
+			$insert2=
+			"INSERT into 
+				hasiltipe2
+			values (
+				'".$bulan.$ruang.$audit_2an['subkomponen_id'].$audit_2an['alatpelindung_id']."',
+				".$audit_2an['subkomponen_id'].",
+				".$audit_2an['alatpelindung_id'].",
+				'{}',
+				'".$bulan.$ruang.$audit."')";
+			pg_query($insert2);
+		}
+		return true;
+	}
+	else if($tipean['audit_tipe']==3){
+		$audit_3=
+		"SELECT 
+			*
+		from 
+			subkomponen 
+		join 
+			komponen on
+				komponen.komponen_id=subkomponen.komponen_id
+		join 
+			audit on 
+				komponen.audit_id=audit.audit_id
+		where 
+			komponen.audit_id=$audit";
+		$audit_3_R=pg_query($audit_3);
+		while($audit_3an=pg_fetch_array($audit_3_R)){
+			$insert3=
+			"INSERT into 
+				hasiltipe3
+			values (
+				'".$bulan.$audit_3an['subkomponen_id']."',
+				".$audit_3an['subkomponen_id'].",
+				'{}',
+				'".$bulan.$ruang.$audit."')";
+			pg_query($insert3);
+		}
+		return true;
 	}
 }
 ?>

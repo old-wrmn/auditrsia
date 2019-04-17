@@ -16,13 +16,24 @@ if(isset($_GET['view'])){
             include "view/data/unit.php";
             break;
         case 'audit_c':
-            include "view/audit/create.php";
+            if(perm_audit()){
+                include "view/audit/create.php";}
+            else{
+                include "view/404.php";
+            }
             break;
         case 'audit_f':
             include "view/audit/fill.php";
             break;
         case 'audit_r':
-            include "view/audit/result.php";
+                include "view/audit/result.php";
+            break;
+        case 'audit_n':
+            if(perm_audit()){
+                include "view/audit/nextstep.php";}
+            else{
+                include "view/404.php";
+            }
             break;
         case 'ruang':
             include "view/data/ruangan.php";

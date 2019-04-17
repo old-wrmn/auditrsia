@@ -41,4 +41,23 @@ if(isset($_GET['logout'])){
     session_destroy();
     unset($_SESSION['user']);
 }
+
+//add record
+if(isset($_POST['record_c'])){
+        $ruang=null;
+        if(isset($_POST['ruang'])){
+            $ruang = $_POST['ruang'];
+        }
+        // echo $ruang;
+        $bulan=$_POST['bulan'];
+        $pegawai=$_POST['pegawai'];
+        $audit=$_POST['audit'];
+        if(new_record($ruang,$bulan,$pegawai,$audit)){
+            new_hasil($ruang,$bulan,$audit);
+            header('location:../');
+        }
+        else {
+            header('location:'.$_POST['url'].'&msg=fail');
+        }
+}
 ?>

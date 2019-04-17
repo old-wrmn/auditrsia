@@ -245,4 +245,27 @@ function get_unit($pegawai=null){
 	$unit_R=pg_query($unit);
 	return $unit_R;
 }
+
+//aktifasi audit
+function audit_act($view){
+	if(
+		$_GET['view']=='audit_c'||
+		$_GET['view']=='audit_f'||
+		$_GET['view']=='audit_r'
+		){
+			return 1;
+		}
+	else if(
+		$_GET['view']=='alatpelindung'||
+		$_GET['view']=='audit'||
+		$_GET['view']=='komponen'||
+		$_GET['view']=='pegawai'||
+		$_GET['view']=='ruang'||
+		$_GET['view']=='subkomponen'||
+		$_GET['view']=='tiperuang'||
+		$_GET['view']=='unit'
+	){
+		return 2;
+	}
+}
 ?>

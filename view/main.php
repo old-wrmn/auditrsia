@@ -87,19 +87,15 @@
                                     </li>
                                     <li
                                     <?php
+                                    $jabatan=$_SESSION['user']['pegawai_jabatan'];
                                     if(
-                                    isset($_GET['view'])){
-                                    if(
-                                    $_GET['view']=='audit_c'||
-                                    $_GET['view']=='audit_f'||
-                                    $_GET['view']=='audit_r'
-                                    ){
+                                    isset($_GET['view'])&&audit_act($_GET['view'])==1){
                                         echo "class='active'";
-                                    }}?>>
+                                    }?>>
                                         <a href="javascript:void(0)"><i class="ti-check-box"></i><span>Audit</span></a>
                                         <ul class="submenu">
                                             <?php
-                                            if($_SESSION['user']['pegawai_jabatan']==0||$_SESSION['user']['pegawai_jabatan']==1){?>
+                                            if($jabatan==0||$jabatan==1){?>
                                                 <li
                                                 <?php
                                                 if(isset($_GET['view'])&&$_GET['view']=='audit_c'){
@@ -108,7 +104,7 @@
                                                 <a href="?view=audit_c">Buat Audit </a></li>
                                             <?php }?>
                                             <?php
-                                            if($_SESSION['user']['pegawai_jabatan']==2){?>
+                                            if($jabatan==2){?>
                                                 <li
                                                 <?php
                                                 if(isset($_GET['view'])&&$_GET['view']=='audit_f'){
@@ -126,20 +122,9 @@
                                     </li>
                                     <li
                                     <?php
-                                    if(
-                                    isset($_GET['view'])){
-                                    if(
-                                    $_GET['view']=='alatpelindung'||
-                                    $_GET['view']=='audit'||
-                                    $_GET['view']=='komponen'||
-                                    $_GET['view']=='pegawai'||
-                                    $_GET['view']=='ruang'||
-                                    $_GET['view']=='subkomponen'||
-                                    $_GET['view']=='tiperuang'||
-                                    $_GET['view']=='unit'
-                                    ){
+                                    if(isset($_GET['view'])&&audit_act($_GET['view'])==2){
                                         echo "class='active'";
-                                    }}?>>
+                                    }?>>
                                         <a href="javascript:void(0)"><i class="ti-clipboard"></i><span>Data</span></a>
                                         <ul class="submenu">
                                             <li

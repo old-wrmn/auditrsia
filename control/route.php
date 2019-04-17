@@ -15,6 +15,15 @@ if(isset($_GET['view'])){
         case 'unit':
             include "view/data/unit.php";
             break;
+        case 'audit_c':
+            include "view/audit/create.php";
+            break;
+        case 'audit_f':
+            include "view/audit/fill.php";
+            break;
+        case 'audit_r':
+            include "view/audit/result.php";
+            break;
         case 'ruang':
             include "view/data/ruangan.php";
             break;

@@ -66,24 +66,13 @@
                                     <tbody>
 <?php 
 $c=1;
-$ruang="SELECT 
-    ruang.ruang_nama as nama, ruang.tiperuang_nama as tipe, tiperuang.tiperuang_kelas as kelas 
-from 
-    ruang 
-inner join 
-    tiperuang 
-on 
-    tiperuang.tiperuang_nama=ruang.tiperuang_nama  
-where 
-    tiperuang.pegawai_nomor=".$_SESSION['user']['pegawai_nomor'];
-    $ruang_R = pg_query($ruang);
-    while ($ruangan=pg_fetch_array($ruang_R)) {
-?>
+$query=get_ruang($_SESSION['user']['pegawai_nomor'],null);
+while ($ruangan=pg_fetch_array($query)) {?>
                                         <tr>
                                             <th><?=$c?></th>
-                                            <td><?=ucwords($ruangan['nama'])?></td>
-                                            <td><?=ucwords($ruangan['tipe'])?></td>
-                                            <td><?=ucwords($ruangan['kelas'])?></td>
+                                            <td><?=ucwords($ruangan['ruang_nama'])?></td>
+                                            <td><?=ucwords($ruangan['tiperuang_nama'])?></td>
+                                            <td><?=ucwords($ruangan['tiperuang_kelas'])?></td>
                                         </tr>
 <?php $c++;} ?>
                                     </tbody>
@@ -112,10 +101,8 @@ where
                                     <tbody>
 <?php 
 $d=1;
-$unit="select * from unit where pegawai_nomor=".$_SESSION['user']['pegawai_nomor'];
-// echo $unit;
-    $unit_R = pg_query($unit);
-    while ($unitan=pg_fetch_array($unit_R)) {
+$query=get_unit($_SESSION['user']['pegawai_nomor'],null);
+while ($unitan=pg_fetch_array($query)) {
 ?>
                                         <tr>
                                             <th><?=$c?></th>
@@ -134,9 +121,5 @@ $unit="select * from unit where pegawai_nomor=".$_SESSION['user']['pegawai_nomor
         </div>
     </div>
     </div>
-<!-- buat notifikasi -->
-    <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat blanditiis eaque ab qui accusamus laudantium perspiciatis sint quibusdam at eius consequatur quos possimus aspernatur debitis deleniti sed odit provident repudiandae suscipit officiis, tempora voluptas, excepturi perferendis. Quasi delectus tempora temporibus ipsa soluta mollitia, doloremque corrupti labore, quae voluptatem obcaecati consequuntur ad ipsum fugit impedit cum. Facere, ea? Eveniet quisquam ratione voluptate rerum tempora, consectetur assumenda. Porro temporibus suscipit corporis nulla?</p>
-    <br><br><br><br><br><br>.
-    </div>
+
 </div>

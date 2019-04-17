@@ -15,7 +15,6 @@
                                 <th scope="col">jenis</th>
                                 <th scope="col">Nama</th>
                                 <th scope="col">komponen</th>
-                                <th scope="col">unit</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -30,7 +29,6 @@
                                 <td><?=ucwords($auditan['audit_jenis'])?></td>
                                 <td><?=ucwords($auditan['audit_nama'])?></td>
                                 <td><a href="?view=komponen&&audit=<?=$auditan['audit_id']?>"><i class="ti-eye"></i></a></td>
-                                <td><?php if(pg_num_rows(get_unit(null,$auditan['audit_id']))){?><a href="?view=unit&&audit=<?=$auditan['audit_id']?>"><i class="ti-panel"></i></a><?php }?></td>
                             </tr>
                     <?php $c++;} ?>
                         </tbody>

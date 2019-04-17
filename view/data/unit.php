@@ -5,11 +5,7 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="header-title">Unit</h4>
-                <h6><?php
-                if(isset($_GET['audit'])){
-                    echo "Audit &nbsp;: ".ucwords(namaaud($_GET['audit'],"nama"));
-                    echo "<br> ID &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: ".namaaud($_GET['audit'],"id");
-                }?></h6><br>
+                <br>
                 <div class="single-table">
                     <div class="table-responsive">
                     <table class="table text-center">
@@ -27,13 +23,7 @@
                     $c=1;
                     $query=get_unit();
                     if(isset($_GET['pegawai'])){
-                        $query=get_unit($_GET['pegawai'],null);
-                        if(isset($_GET['audit'])){
-                            $query=get_unit($_GET['audit'],$_GET['audit']);
-                        }
-                    }
-                    if(isset($_GET['audit'])){
-                        $query=get_unit(null,$_GET['audit']);
+                        $query=get_unit($_GET['pegawai']);
                     }
                     while ($unitan=pg_fetch_array($query)) {
                     ?>

@@ -87,29 +87,41 @@
                                     </li>
                                     <li
                                     <?php
-                                    if(isset($_GET['view'])&&$_GET['view']=='auditr'){
+                                    if(
+                                    isset($_GET['view'])){
+                                    if(
+                                    $_GET['view']=='audit_c'||
+                                    $_GET['view']=='audit_f'||
+                                    $_GET['view']=='audit_r'
+                                    ){
                                         echo "class='active'";
-                                    }?>>
+                                    }}?>>
                                         <a href="javascript:void(0)"><i class="ti-check-box"></i><span>Audit</span></a>
                                         <ul class="submenu">
+                                            <?php
+                                            if($_SESSION['user']['pegawai_jabatan']==0||$_SESSION['user']['pegawai_jabatan']==1){?>
+                                                <li
+                                                <?php
+                                                if(isset($_GET['view'])&&$_GET['view']=='audit_c'){
+                                                echo "class='active'";
+                                                }?>>
+                                                <a href="?view=audit_c">Buat Audit </a></li>
+                                            <?php }?>
+                                            <?php
+                                            if($_SESSION['user']['pegawai_jabatan']==2){?>
+                                                <li
+                                                <?php
+                                                if(isset($_GET['view'])&&$_GET['view']=='audit_f'){
+                                                echo "class='active'";
+                                                }?>>
+                                                <a href="?view=audit_f">isi audit</a></li>
+                                            <?php }?>
                                             <li
                                             <?php
-                                            if(isset($_GET['view'])&&$_GET['view']=='alatpelindung'){
+                                            if(isset($_GET['view'])&&$_GET['view']=='audit_r'){
                                             echo "class='active'";
                                             }?>>
-                                            <a href="?view=alatpelindung">Buat Audit</a></li>
-                                            <li
-                                            <?php
-                                            if(isset($_GET['view'])&&$_GET['view']=='alatpelindung'){
-                                            echo "class='active'";
-                                            }?>>
-                                            <a href="?view=alatpelindung">isi audit</a></li>
-                                            <li
-                                            <?php
-                                            if(isset($_GET['view'])&&$_GET['view']=='alatpelindung'){
-                                            echo "class='active'";
-                                            }?>>
-                                            <a href="?view=alatpelindung">hasil Audit</a></li>
+                                            <a href="?view=audit_r">hasil Audit</a></li>
                                         </ul>
                                     </li>
                                     <li
@@ -246,5 +258,4 @@
     <script src="assets/js/plugins.js"></script>
     <script src="assets/js/scripts.js"></script>
 </body>
-
 </html>

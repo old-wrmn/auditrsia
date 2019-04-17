@@ -106,7 +106,7 @@ function password(){
 }
 
 //fungsi select alatpelindung
-function get_alatpelindung($unit=null){
+function get_alatpelindung($unit=null,$audit=null){
 	$alatpelindung=
 		"SELECT 
 			*
@@ -121,11 +121,15 @@ function get_alatpelindung($unit=null){
 			" where
 				unit.unit_id=".$unit;
 	}
+	if(!is_null($audit)){
+		$alatpelindung.=
+			" where
+				unit.audit_id=".$audit;
+	}
 	$alatpelindung.=
 	" order by
 		alatpelindung.alatpelindung_id";
-	$alatpelindung_R = pg_query($alatpelindung);
-	return $alatpelindung_R;
+	return pg_query($alatpelindung);
 }
 
 //select audit
@@ -138,8 +142,7 @@ function get_audit($id=null){
 	if(!is_null($id)){
 		$audit.=" where audit_id=".$id;
 	}
-	$audit_R=pg_query($audit);
-	return $audit_R;
+	return pg_query($audit);
 }
 
 //select komponen
@@ -161,8 +164,7 @@ function get_komponen($audit=null){
 	$komponen.=
 	" order by 
 		komponen.komponen_id";
-	$komponen_R = pg_query($komponen);
-	return $komponen_R;
+	return pg_query($komponen);
 }
 
 //select pegawai
@@ -174,8 +176,7 @@ function get_pegawai(){
 			pegawai
 		order by
 			pegawai_jabatan";
-	$pegawai_R=pg_query($pegawai);
-	return $pegawai_R;
+	return pg_query($pegawai);
 }
 
 //select pegawai ipcn/surveyor
@@ -189,8 +190,7 @@ function get_surveyor(){
 			pegawai_jabatan=2
 		order by
 			pegawai_jabatan";
-	$pegawai_R=pg_query($pegawai);
-	return $pegawai_R;
+	return pg_query($pegawai);
 }
 
 //select ruangan
@@ -213,8 +213,7 @@ function get_ruang($pegawai=null,$tipe=null){
 	$ruang.=
 		" order by
 			ruang_nama";
-	$ruang_R=pg_query($ruang);
-	return $ruang_R;
+	return pg_query($ruang);
 }
 
 //select sub-komponen
@@ -230,15 +229,17 @@ function get_subkomponen($audit=null,$komponen=null){
 			subkomponen.komponen_id=komponen.komponen_id";
 	if(!is_null($audit)){
 		$subkomponen.=" where komponen.audit_id=".$audit;
+		if(!is_null($komponen)){
+			$subkomponen.=" and komponen.komponen_id=".$komponen;
+		}
 	}
-	if(!is_null($komponen)){
-		$subkomponen.=" and komponen.komponen_id=".$komponen;
+	else if(!is_null($komponen)){
+		$subkomponen.=" where komponen.komponen_id=".$komponen;
 	}
 	$subkomponen.=
 		" order by
 			subkomponen_id";
-	$subkomponen_R=pg_query($subkomponen);
-	return $subkomponen_R;
+	return pg_query($subkomponen);
 }
 
 //select tipe ruang
@@ -252,12 +253,11 @@ function get_tipe($pegawai=null){
 		pegawai
 	on
 		pegawai.pegawai_nomor=tiperuang.pegawai_nomor";
-	$tipe_R = pg_query($tipe);
-	return $tipe_R;
+	return pg_query($tipe);
 }
 
 //select unit
-function get_unit($pegawai=null){
+function get_unit($pegawai=null,$audit=null){
 	$unit=
 	"SELECT
 		*
@@ -266,12 +266,40 @@ function get_unit($pegawai=null){
 	join
 		pegawai
 	on
-		pegawai.pegawai_nomor=unit.pegawai_nomor";
+		pegawai.pegawai_nomor=unit.pegawai_nomor
+	join 
+		audit
+	on 
+		unit.audit_id=audit.audit_id";
 	if(!is_null($pegawai)){
 		$unit.=" where pegawai.pegawai_nomor=".$pegawai;
 	}
-	$unit_R=pg_query($unit);
-	return $unit_R;
+	if(!is_null($audit)){
+		$unit.=" where unit.audit_id=".$audit;
+	}
+	return pg_query($unit);
+}
+
+//select record
+function get_record($pegawai=null,$id=null){
+	$record="SELECT 
+            *
+        from 
+            record
+		inner join
+			audit
+			on audit.audit_id=record.audit_id";
+	if(!is_null($pegawai)){
+	$record.=
+		" where 
+			pegawai_nomor=".$pegawai;
+	}
+	if(!is_null($id)){
+	$record.=
+		" where 
+			record_id='".$id."'";
+	}	
+	return pg_query($record);
 }
 
 //aktifasi audit
@@ -409,5 +437,111 @@ function new_hasil($ruang,$bulan,$audit){
 		}
 		return true;
 	}
+}
+
+//array leght
+function count_ar($id=null){
+	$count="
+        SELECT 
+            array_length(record_updateon, 1) as array
+        FROM 
+            record
+        where 
+			record_id='".$id."'";
+	$count_R=pg_fetch_array(pg_query($count));
+	return $count_R['array'];
+}
+
+//buat nambahin date pada record
+function new_update($c,$id){
+	$query=
+	"UPDATE 
+		record
+	set
+		record_updateon[$c]=now()
+	where
+		record_id='".$id."'";
+	pg_query($query);
+}
+
+//buat nambahin result hasiltipe1
+function result1($res,$r,$c){
+	$query=
+	"UPDATE
+		hasiltipe1
+	set
+		hasiltipe1_hasil[$c]=$r
+	where
+		hasiltipe1_id='".$res."'";
+	pg_query($query);
+}
+
+//buat nambahin result hasiltipe2
+function result2($res,$r,$c){
+	$query=
+	"UPDATE
+		hasiltipe2
+	set
+		hasiltipe2_hasil[$c]=$r
+	where
+		hasiltipe2_id='".$res."'";
+	pg_query($query);
+}
+
+//buat nambahin result hasiltipe3
+function result3($res,$r,$c){
+	$query=
+	"UPDATE
+		hasiltipe3
+	set
+		hasiltipe3_hasil[$c]=$r
+	where
+		hasiltipe3_id='".$res."'";
+	pg_query($query);
+}
+
+//select tipe1
+function get_tipe1($id=null){
+	$hasil_1=
+	"SELECT
+		* 
+	from
+		hasiltipe1";
+	if(!is_null($id)){
+		$hasil_1.="
+			where
+				record_id='".$id."'";
+	}
+	return pg_query($hasil_1);
+}
+
+//select tipe2
+function get_tipe2($id=null){
+	$hasil_2=
+	"SELECT
+		* 
+	from
+		hasiltipe2";
+	if(!is_null($id)){
+		$hasil_2.="
+			where
+				record_id='".$id."'";
+	}
+	return pg_query($hasil_2);
+}
+
+//select tipe3
+function get_tipe3($id=null){
+	$hasil_3=
+	"SELECT
+		* 
+	from
+		hasiltipe3";
+	if(!is_null($id)){
+		$hasil_3.="
+			where
+				record_id='".$id."'";
+	}
+	return pg_query($hasil_3);
 }
 ?>

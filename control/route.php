@@ -7,6 +7,9 @@ if(isset($_GET['msg'])){
         case 'ok':
             include "view/msg/ok.php";
             break;
+        case 'done':
+            include "view/msg/done.php";
+            break;
     }
 }
 if(isset($_GET['view'])){
@@ -34,6 +37,9 @@ if(isset($_GET['view'])){
             else{
                 include "view/404.php";
             }
+            break;
+        case 'audit_ck':
+            include "view/audit/check.php";
             break;
         case 'ruang':
             include "view/data/ruangan.php";

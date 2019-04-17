@@ -60,4 +60,58 @@ if(isset($_POST['record_c'])){
             header('location:'.$_POST['url'].'&msg=fail');
         }
 }
+
+if(isset($_POST['checkaudit1'])){
+    $id=$_GET['record_id'];
+    $c=count_ar($id)+1;
+    new_update($c,$id);
+    $rec=get_tipe1($id);
+    while($record=pg_fetch_array($rec)){
+        $res=$record['hasiltipe1_id'];
+        if(isset($_POST[$res])){
+            $r='true'; 
+        }
+        else{
+            $r='false';
+        }
+        result1($res,$r,$c);
+    }
+    header('location:../?view=audit_f&msg=done');
+}
+
+if(isset($_POST['checkaudit2'])){
+    $id=$_GET['record_id'];
+    $c=count_ar($id)+1;
+    new_update($c,$id);
+    $rec=get_tipe2($_GET['record_id']);
+    while($record=pg_fetch_array($rec)){
+        $res=$record['hasiltipe2_id'];
+        if(isset($_POST[$res])){
+            $r='true'; 
+        }
+        else{
+            $r='false';
+        }
+        result2($res,$r,$c);
+    }
+    header('location:../?view=audit_f&msg=done');
+}
+
+if(isset($_POST['checkaudit3'])){
+    $id=$_GET['record_id'];
+    $c=count_ar($id)+1;
+    new_update($c,$id);
+    $rec=get_tipe3($_GET['record_id']);
+    while($record=pg_fetch_array($rec)){
+        $res=$record['hasiltipe3_id'];
+        if(isset($_POST[$res])){
+            $r='true'; 
+        }
+        else{
+            $r='false';
+        }
+        result3($res,$r,$c);
+    }
+    header('location:../?view=audit_f&msg=done');
+}
 ?>

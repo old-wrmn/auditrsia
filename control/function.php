@@ -288,18 +288,39 @@ function get_record($pegawai=null,$id=null){
             record
 		inner join
 			audit
-			on audit.audit_id=record.audit_id";
+			on audit.audit_id=record.audit_id
+		inner join 
+			pegawai
+				on pegawai.pegawai_nomor=record.pegawai_nomor";
 	if(!is_null($pegawai)){
 	$record.=
 		" where 
-			pegawai_nomor=".$pegawai;
+			record.pegawai_nomor=".$pegawai;
+		if(!is_null($id)){
+			$record.=
+				" and 
+					record_id='".$id."'";
+			}	
 	}
-	if(!is_null($id)){
+	else if(!is_null($id)){
 	$record.=
 		" where 
 			record_id='".$id."'";
 	}	
 	return pg_query($record);
+}
+
+//select update on from record
+function record_time($count,$id){
+	$query=
+	"SELECT 
+		record_updateon[$count] as tgl 
+	from 
+		record 
+	where
+		record_id='$id'
+	LIMIT 1";
+	return pg_query($query);
 }
 
 //aktifasi audit
@@ -514,6 +535,20 @@ function get_tipe1($id=null){
 	}
 	return pg_query($hasil_1);
 }
+//select tipe1 result
+function get_tipe1_R($cunt,$id,$komponen){
+	$query=
+	"SELECT 
+		hasiltipe1_hasil[$cunt] as res
+	from 
+		hasiltipe1
+	where
+		hasiltipe1.komponen_id=$komponen
+	and
+		hasiltipe1.record_id='$id'";
+	$r=pg_fetch_array(pg_query($query));
+	return $r['res'];
+}
 
 //select tipe2
 function get_tipe2($id=null){
@@ -530,6 +565,23 @@ function get_tipe2($id=null){
 	return pg_query($hasil_2);
 }
 
+//select tipe1 result
+function get_tipe2_R($cunt,$id,$subkomponen,$alpel){
+	$query=
+	"SELECT 
+		hasiltipe2_hasil[$cunt] as res
+	from 
+		hasiltipe2
+	where
+		hasiltipe2.subkomponen_id=$subkomponen
+	and
+		hasiltipe2.record_id='$id'
+	and
+		hasiltipe2.alatpelindung_id=$alpel";
+	$r=pg_fetch_array(pg_query($query));
+	return $r['res'];
+}
+
 //select tipe3
 function get_tipe3($id=null){
 	$hasil_3=
@@ -543,5 +595,20 @@ function get_tipe3($id=null){
 				record_id='".$id."'";
 	}
 	return pg_query($hasil_3);
+}
+
+//select tipe3 result
+function get_tipe3_R($cunt,$id,$subkomponen){
+	$query=
+	"SELECT 
+		hasiltipe3_hasil[$cunt] as res
+	from 
+		hasiltipe3
+	where
+		hasiltipe3.subkomponen_id=$subkomponen
+	and
+		hasiltipe3.record_id='$id'";
+	$r=pg_fetch_array(pg_query($query));
+	return $r['res'];
 }
 ?>

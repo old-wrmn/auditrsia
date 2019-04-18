@@ -7,6 +7,9 @@
                 <h4 class="header-title">Pegawai</h4>
                 <div class="single-table">
                     <div class="table-responsive">
+                    <?if(perm_audit()){?>
+                        <a href="?view=usermk" class="btn btn-primary mb-3"><i class="ti-plus"></i>&nbsp;Tambah Data Pegawai</a>
+                    <?php }?>
                     <table class="table text-center">
                         <thead class="text-uppercase bg-primary">
                             <tr class="text-white">

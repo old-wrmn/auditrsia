@@ -10,6 +10,20 @@ function isLoggedIn(){
     }
 }
 
+//nambah user
+function add_user($nomor,$nama,$jabatan){
+	$pwd=md5('12345');
+	$query=
+	"INSERT into
+		pegawai
+	values (
+		 $nomor,
+		'$nama',
+		'$pwd',
+		$jabatan)";
+	return pg_query($query);
+}
+
 //fungsi cek admin atau ketua
 function perm_audit(){
 	if ($_SESSION['user']['pegawai_jabatan']==1||$_SESSION['user']['pegawai_jabatan']==0) {

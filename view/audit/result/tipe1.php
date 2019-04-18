@@ -13,6 +13,7 @@
         <?php $count++;
         }?>
         <td colspan="3">Hasil</td>
+        <td rowspan="3">Keterangan</td>
     </tr>
     <tr>
         <td rowspan="2">No</td>
@@ -60,6 +61,7 @@ while($komponenan=pg_fetch_array($komponen)){
         $total_t+=$t; 
         $r=$y/($y+$t)*100;
         echo number_format($r, 2, '.', '')?></td>
+        <td></td>
     </tr>
 <?php $kira++;}?>
 <tr>
@@ -68,7 +70,7 @@ while($komponenan=pg_fetch_array($komponen)){
     <td><?=$total_t?></td>
     <td><?php 
         $total_r=$total_y/($total_y+$total_t)*100;
-        echo number_format($total_r, 2, '.', '')?></td>
+        echo number_format($total_r, 2, '.', '')?></td>  
 </tr>
 </table>
 Keterangan :<br>

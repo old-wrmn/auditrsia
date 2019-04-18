@@ -68,6 +68,9 @@ if(isset($_GET['view'])){
         case 'pwdchg':
             include "view/user/pwdchg.php";
             break;
+        case 'usermk':
+            include "view/user/make.php";
+            break;
         default:
             include "view/404.php";
             break;

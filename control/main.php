@@ -26,6 +26,16 @@ if(isset($_POST['add_user'])&&perm_audit()){
 }
 
 //ganti jabatan jadi surveyor
+if(isset($_POST['del_user'])){
+    $nomor=$_POST['pegawai'];
+    if(update_jab($nomor,-1)){
+        header('location:..?view=pegawai&&msg=done');
+    }
+    else{
+        header('location:..?view=usermk&&msg=fail'); 
+    }
+}
+
 if(isset($_POST['add_surveyor'])){
     $nomor=$_POST['pegawai'];
     if(update_jab($nomor,2)){
@@ -44,6 +54,20 @@ if(isset($_POST['del_surveyor'])){
     }
     else{
         header('location:..?view=surveyormk&&msg=fail'); 
+    }
+}
+
+//ganti pj unit
+if(isset($_POST['pj_unit'])){
+    $unit_id=$_GET['unit'];
+    $unit=pg_fetch_array(get_unit(null,null,$_GET['unit']));
+    update_jab($unit['pegawai_nomor'],9);
+    update_jab($_POST['pegawai'],3);
+    if(pj_unit($_GET['unit'],$_POST['pegawai'])){
+        header('location:..?view=unit&&msg=done');
+    }
+    else{
+        header("location:..?view=unit_pj&&unit=$unit_id&&msg=fail"); 
     }
 }
 

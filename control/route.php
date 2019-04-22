@@ -71,11 +71,17 @@ if(isset($_GET['view'])){
         case 'usermk':
             include "view/user/make.php";
             break;
+        case 'userdel':
+            include "view/user/delete.php";
+            break;
         case 'surveyormk':
             include "view/user/surveyor_m.php";
             break;
         case 'surveyordel':
             include "view/user/surveyor_r.php";
+            break;
+        case 'unit_pj':
+            include "view/user/unit_pj.php";
             break;
         default:
             include "view/404.php";

@@ -208,9 +208,10 @@ function get_pegawai($jabatan=null){
 		"SELECT 
 			*
 		from 
-			pegawai";
+			pegawai
+		where pegawai_jabatan>0";
 	if(!is_null($jabatan)){
-		$pegawai.=" where pegawai_jabatan=$jabatan";
+		$pegawai.=" and pegawai_jabatan=$jabatan ";
 	}
 	$pegawai.="
 	order by
@@ -317,7 +318,7 @@ function get_tipe($ruang=null){
 }
 
 //select unit
-function get_unit($pegawai=null,$audit=null){
+function get_unit($pegawai=null,$audit=null,$id=null){
 	$unit=
 	"SELECT
 		*
@@ -334,7 +335,18 @@ function get_unit($pegawai=null,$audit=null){
 	else if(!is_null($audit)){
 		$unit.=" where unit.audit_id=".$audit;
 	}
+	else if(!is_null($id)){
+		$unit.=" where unit.unit_id=".$id;
+	}
+	$unit.=" order by unit_id";
 	return pg_query($unit);
+}
+
+//update unit
+function pj_unit($id,$pj){
+	$query=
+	"UPDATE unit set pegawai_nomor=$pj where unit_id=$id";
+	return pg_query($query);
 }
 
 //select record

@@ -16,6 +16,11 @@
                                 <th scope="col">Nama</th>
                                 <th scope="col">penanggung jawab</th>
                                 <th scope="col">alat pelindung</th>
+                                <?php 
+                                if(perm_audit()){?>
+                                    <th scope="col">Edit</th>    
+                                
+                            <?php }?>
                             </tr>
                         </thead>
                         <tbody>
@@ -36,6 +41,11 @@
                         if(pg_num_rows(get_alatpelindung($unitan['unit_id']))>0){?>
                             <a href="?view=alatpelindung&&unit=<?=$unitan['unit_id']?>">
                             <i class="ti-eye"></i></a>
+                        <?php }?></td>
+                        <td><?php 
+                        if(perm_audit()){?>
+                            <a href="?view=unit_pj&&unit=<?=$unitan['unit_id']?>">
+                            <i class="ti-pencil"></i></a>
                         <?php }?></td>
                             </tr>
                     <?php $c++;} ?>

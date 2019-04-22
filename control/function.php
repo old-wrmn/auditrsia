@@ -308,7 +308,7 @@ function get_tipe($ruang=null){
 }
 
 //select unit
-function get_unit($pegawai=null,$id_unit=null){
+function get_unit($pegawai=null,$audit=null){
 	$unit=
 	"SELECT
 		*
@@ -322,8 +322,8 @@ function get_unit($pegawai=null,$id_unit=null){
 	if(!is_null($pegawai)){
 		$unit.=" where pegawai.pegawai_nomor=".$pegawai;
 	}
-	else if(!is_null($id_unit)){
-		$unit.=" where unit.unit_id=".$id_unit;
+	else if(!is_null($audit)){
+		$unit.=" where unit.audit_id=".$audit;
 	}
 	return pg_query($unit);
 }

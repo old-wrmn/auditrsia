@@ -93,8 +93,11 @@ Menyatakan dengan sesungguhnya bahwa temuan/hasil survei sesuai dengan keadaan y
 </div>
 <br><br><br>
 <div class="row">
+    <?php   
+    $pj=pg_fetch_array(get_unit(null,$record['audit_id']))?>
     <div class="col">
-            __________________
+        <u><?=ucwords($pj['pegawai_nama'])?><br></u>
+        <?=$pj['pegawai_nomor']?>
     </div>
     <div class="col">
             <u><?=ucwords(namaorg($record['pegawai_nomor'], "nama"))?><br></u>

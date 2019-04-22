@@ -12,17 +12,6 @@
                     <label class="col-form-label">Nama Pegawai</label>
                     <input class="form-control" type="text" id="nama" name="nama">
                 </div>
-                <div class="form-group">
-                    <label class="col-form-label">Jabatan</label>
-                    <select class="custom-select" name="jabatan">
-                        <option selected="selected">Pilih jabatan...</option>
-                        <?php
-                        $j=0;
-                        while($j<=5){?>
-                         <option value="<?=$j?>"><?=ucwords(jabatan($j))?></option>
-                        <?php $j++; }?>
-                    </select>
-                </div>
                   <button type="submit" name="add_user" class="btn btn-primary mt-4 pr-4 pl-4">Submit</button>
                 </form>
             </div>

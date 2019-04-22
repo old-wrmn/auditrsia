@@ -17,13 +17,36 @@ if(isset($_POST['login'])){
 //buat akun
 if(isset($_POST['add_user'])&&perm_audit()){
     $nama=strtolower($_POST['nama']);
-    if(add_user($_POST['nomor'],$nama,$_POST['jabatan'])){
-        header('location:..?view=pegawai&&msg=ok');
+    if(add_user($_POST['nomor'],$nama)){
+        header('location:..?view=pegawai&&msg=done');
     }
     else{
         header('location:..?view=usermk&&msg=fail');    
     }
 }
+
+//ganti jabatan jadi surveyor
+if(isset($_POST['add_surveyor'])){
+    $nomor=$_POST['pegawai'];
+    if(update_jab($nomor,2)){
+        header('location:..?view=pegawai&&msg=done');
+    }
+    else{
+        header('location:..?view=surveyormk&&msg=fail'); 
+    }
+}
+
+//ganti jabatan dari surveyor
+if(isset($_POST['del_surveyor'])){
+    $nomor=$_POST['pegawai'];
+    if(update_jab($nomor,9)){
+        header('location:..?view=pegawai&&msg=done');
+    }
+    else{
+        header('location:..?view=surveyormk&&msg=fail'); 
+    }
+}
+
 //buat ganti password
 if (isset($_POST['simpan_pwd'])) {
     $l  = md5($_POST['passwordLama']);

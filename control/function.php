@@ -11,16 +11,14 @@ function isLoggedIn(){
 }
 
 //nambah user
-function add_user($nomor,$nama,$jabatan){
+function add_user($nomor,$nama){
 	$pwd=md5('12345');
 	$query=
 	"INSERT into
 		pegawai
 	values (
 		 $nomor,
-		'$nama',
-		'$pwd',
-		$jabatan)";
+		'$nama')";
 	return pg_query($query);
 }
 
@@ -119,6 +117,13 @@ function password(){
 	return $c;
 }
 
+//ganti jabatan
+function update_jab($pegawai,$jabatan){
+	$query=
+	"UPDATE pegawai set pegawai_jabatan=$jabatan where pegawai_nomor=$pegawai";
+	return pg_query($query);
+}
+
 //fungsi select alatpelindung
 function get_alatpelindung($unit=null,$audit=null){
 	$alatpelindung=
@@ -198,14 +203,18 @@ function get_komponen($audit=null){
 }
 
 //select pegawai
-function get_pegawai(){
+function get_pegawai($jabatan=null){
 	$pegawai=
 		"SELECT 
 			*
 		from 
-			pegawai
-		order by
-			pegawai_jabatan";
+			pegawai";
+	if(!is_null($jabatan)){
+		$pegawai.=" where pegawai_jabatan=$jabatan";
+	}
+	$pegawai.="
+	order by
+	pegawai_jabatan";
 	return pg_query($pegawai);
 }
 
@@ -671,4 +680,6 @@ function get_tipe3_R($cunt,$id,$subkomponen){
 	$r=pg_fetch_array(pg_query($query));
 	return $r['res'];
 }
+
+
 ?>

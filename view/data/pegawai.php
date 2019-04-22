@@ -9,6 +9,9 @@
                     <div class="table-responsive">
                     <?if(perm_audit()){?>
                         <a href="?view=usermk" class="btn btn-primary mb-3"><i class="ti-plus"></i>&nbsp;Tambah Data Pegawai</a>
+                        <a href="?view=surveyormk" class="btn btn-primary mb-3" style="float:right;"><i class="ti-plus"></i>&nbsp;Tambah surveyor</a><br>
+                        <a href="?view=surveyordel" class="btn btn-primary mb-3" style="float:right;"><i class="ti-minus"></i>&nbsp;Hapus surveyor</a>
+                        
                     <?php }?>
                     <table class="table text-center">
                         <thead class="text-uppercase bg-primary">

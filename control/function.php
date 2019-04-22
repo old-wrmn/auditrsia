@@ -135,7 +135,7 @@ function get_alatpelindung($unit=null,$audit=null){
 			" where
 				unit.unit_id=".$unit;
 	}
-	if(!is_null($audit)){
+	else if(!is_null($audit)){
 		$alatpelindung.=
 			" where
 				unit.audit_id=".$audit;
@@ -144,6 +144,22 @@ function get_alatpelindung($unit=null,$audit=null){
 	" order by
 		alatpelindung.alatpelindung_id";
 	return pg_query($alatpelindung);
+}
+
+//fungsi get disst alatpelindung
+function get_dist_alatpelindung($record){
+	$query=
+	"SELECT DISTINCT 
+		hasiltipe2.alatpelindung_id,
+		alatpelindung.alatpelindung_nama,
+		alatpelindung.unit_id
+	from hasiltipe2
+		join
+			alatpelindung
+			on
+			hasiltipe2.alatpelindung_id=alatpelindung.alatpelindung_id
+	where hasiltipe2.record_id='".$record."'";
+	return pg_query($query);
 }
 
 //select audit
@@ -207,6 +223,20 @@ function get_surveyor(){
 	return pg_query($pegawai);
 }
 
+//select PJ unit
+function get_pj($record){
+	$query=
+		"SELECT distinct 
+			unit.pegawai_nomor
+		from hasiltipe2 
+		join alatpelindung
+			on hasiltipe2.alatpelindung_id=alatpelindung.alatpelindung_id
+		join unit
+			on alatpelindung.unit_id=unit.unit_id
+		where record_id='2019-04anggrek33209'";
+	return pg_fetch_array(pgquery($query));
+}
+
 //select ruangan
 function get_ruang($pegawai=null,$tipe=null){
 	$ruang=
@@ -257,24 +287,28 @@ function get_subkomponen($audit=null,$komponen=null){
 }
 
 //select tipe ruang
-function get_tipe($pegawai=null){
+function get_tipe($ruang=null){
 	$tipe=
 	"SELECT 
 		*
 	from 
-		tiperuang
+	tiperuang
 	inner join
 		pegawai
-	on
-		pegawai.pegawai_nomor=tiperuang.pegawai_nomor";
-		if(!is_null($pegawai)){
-			$tipe.=" where pegawai.pegawai_nomor=$pegawai";
+		on
+			pegawai.pegawai_nomor=tiperuang.pegawai_nomor";
+		if(!is_null($ruang)){
+			$tipe.=" inner join
+			ruang
+			on
+				tiperuang.tiperuang_nama=ruang.tiperuang_nama
+			where ruang.ruang_nama='".$ruang."'";
 		}
 	return pg_query($tipe);
 }
 
 //select unit
-function get_unit($pegawai=null,$audit=null){
+function get_unit($pegawai=null,$id_unit=null){
 	$unit=
 	"SELECT
 		*
@@ -284,21 +318,18 @@ function get_unit($pegawai=null,$audit=null){
 		pegawai
 	on
 		pegawai.pegawai_nomor=unit.pegawai_nomor
-	join 
-		audit
-	on 
-		unit.audit_id=audit.audit_id";
+	";
 	if(!is_null($pegawai)){
 		$unit.=" where pegawai.pegawai_nomor=".$pegawai;
 	}
-	if(!is_null($audit)){
-		$unit.=" where unit.audit_id=".$audit;
+	else if(!is_null($id_unit)){
+		$unit.=" where unit.unit_id=".$id_unit;
 	}
 	return pg_query($unit);
 }
 
 //select record
-function get_record($pegawai=null,$id=null,$pj=null){
+function get_record($pegawai=null,$id=null,$ruang=null){
 	$record="SELECT 
             *
         from 
@@ -324,7 +355,7 @@ function get_record($pegawai=null,$id=null,$pj=null){
 		" where 
 			record_id='".$id."'";
 	}	
-	else if(!is_null($pj)){
+	else if(!is_null($ruang)){
 	$record.=
 		" 
 		inner join 
@@ -334,7 +365,7 @@ function get_record($pegawai=null,$id=null,$pj=null){
 			tiperuang 
 				on tiperuang.tiperuang_nama=ruang.tiperuang_nama
 		where 
-			tiperuang.pegawai_nomor=".$pj;
+			ruang.ruang_nama=".$ruang;
 	}
 	return pg_query($record);
 }

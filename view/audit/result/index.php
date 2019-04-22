@@ -17,10 +17,7 @@ $record=pg_fetch_array(get_record(null,$_GET['id']));
     border: 1px solid black;
     border-collapse: collapse;
     text-align: center;
-    <?php if($_GET['tipe']==2){?>
-    font-size:10px;   
-    <?php }?>
-    
+    font-size:10px;       
     }
     .row {
     display: flex;

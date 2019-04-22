@@ -2,14 +2,18 @@
 <tr>
 <td colspan="2"></td><?php
 $long=count_ar($_GET['id']);
-$alpel=get_alatpelindung(null,$record['audit_id']);
+$alpel=get_dist_alatpelindung($_GET['id']);
 $s=1;
 while($alpelan=pg_fetch_array($alpel)){
 ?>
     <td colspan="<?=$long*2+3?>"><?=ucwords($alpelan['alatpelindung_nama'])?></td>
 <?php 
 $x[$s]=$alpelan['alatpelindung_id'];
-$s++;}?>
+$unit=$alpelan['unit_id'];
+$s++;}
+// echo $unit;
+?>
+
 </tr>
     <tr>
         <td colspan="2">Tanggal</td>
@@ -120,9 +124,12 @@ Menyatakan dengan sesungguhnya bahwa temuan/hasil survei sesuai dengan keadaan y
 </div>
 <br><br><br>
 <div class="row">
-    <div class="col">
-            __________________
-    </div>
+    <?php   
+        $pj=pg_fetch_array(get_unit(null,$unit))?>
+        <div class="col">
+            <u><?=ucwords($pj['pegawai_nama'])?><br></u>
+            <?=$pj['pegawai_nomor']?>
+        </div>
     <div class="col">
             <u><?=ucwords(namaorg($record['pegawai_nomor'], "nama"))?><br></u>
             <?=$record['pegawai_nomor']?>

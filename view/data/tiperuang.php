@@ -15,6 +15,10 @@
                                 <th scope="col">Kelas</th>
                                 <th scope="col">penanggung jawab</th>
                                 <th scope="col">Ruangan</th>
+                                <?php 
+                                if(perm_audit()){?>
+                                <th scope="col">Ubah PJ</th>
+                                <?php }?>
                             </tr>
                         </thead>
                         <tbody>
@@ -29,6 +33,11 @@
                                 <td><?=ucwords($tipean['tiperuang_kelas'])?></td>
                                 <td><?=ucfirst($tipean['pegawai_nama'])?><br>(<?=$tipean['pegawai_nomor']?>)</td>
                                 <td><a href="?view=ruang&&tipe=<?=$tipean['tiperuang_nama']?>"><i class="ti-package"></i></a></td>
+                                <td><?php 
+                                if(perm_audit()){?>
+                                    <a href="?view=tipe_pj&&tipe=<?=$tipean['tiperuang_nama']?>">
+                                    <i class="ti-pencil"></i></a>
+                                <?php }?></td>
                             </tr>
                     <?php $c++;} ?>
                         </tbody>

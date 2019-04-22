@@ -71,6 +71,19 @@ if(isset($_POST['pj_unit'])){
     }
 }
 
+if(isset($_POST['pj_tipe'])){
+    $tipe_id=$_GET['tipe'];
+    $tipe=pg_fetch_array(get_tipe(null,$_GET['tipe']));
+    update_jab($tipe['pegawai_nomor'],9);
+    update_jab($_POST['pegawai'],4);
+    if(pj_tipe($_GET['tipe'],$_POST['pegawai'])){
+        header('location:..?view=tiperuang&&msg=done');
+    }
+    else{
+        header("location:..?view=tipe_pj&&tipe=$tipe_id&&msg=fail"); 
+    }
+}
+
 //buat ganti password
 if (isset($_POST['simpan_pwd'])) {
     $l  = md5($_POST['passwordLama']);

@@ -83,8 +83,14 @@ if(isset($_GET['view'])){
         case 'unit_pj':
             include "view/user/unit_pj.php";
             break;
+        case 'tipe_pj':
+            include "view/user/tipe_pj.php";
+            break;
         default:
             include "view/404.php";
             break;
     }}
+else{
+    include "view/audit/result.php";
+}
 ?>

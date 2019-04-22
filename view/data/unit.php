@@ -18,7 +18,7 @@
                                 <th scope="col">alat pelindung</th>
                                 <?php 
                                 if(perm_audit()){?>
-                                    <th scope="col">Edit</th>    
+                                    <th scope="col">Ubah PJ</th>    
                                 
                             <?php }?>
                             </tr>

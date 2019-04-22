@@ -297,7 +297,7 @@ function get_subkomponen($audit=null,$komponen=null){
 }
 
 //select tipe ruang
-function get_tipe($ruang=null){
+function get_tipe($ruang=null,$tipe_id=null){
 	$tipe=
 	"SELECT 
 		*
@@ -307,13 +307,18 @@ function get_tipe($ruang=null){
 		pegawai
 		on
 			pegawai.pegawai_nomor=tiperuang.pegawai_nomor";
-		if(!is_null($ruang)){
-			$tipe.=" inner join
-			ruang
-			on
-				tiperuang.tiperuang_nama=ruang.tiperuang_nama
-			where ruang.ruang_nama='".$ruang."'";
-		}
+	if(!is_null($ruang)){
+		$tipe.=" inner join
+		ruang
+		on
+			tiperuang.tiperuang_nama=ruang.tiperuang_nama
+		where ruang.ruang_nama='".$ruang."'";
+	}
+	else if(!is_null($tipe_id)){
+		$tipe.=" where
+			tiperuang.tiperuang_nama='".$tipe_id."'";
+	}
+	$tipe.=" order by tiperuang_kelas asc";
 	return pg_query($tipe);
 }
 
@@ -346,6 +351,12 @@ function get_unit($pegawai=null,$audit=null,$id=null){
 function pj_unit($id,$pj){
 	$query=
 	"UPDATE unit set pegawai_nomor=$pj where unit_id=$id";
+	return pg_query($query);
+}
+
+function pj_tipe($tipe,$pj){
+	$query=
+	"UPDATE tiperuang set pegawai_nomor=$pj where tiperuang_nama='".$tipe."'";
 	return pg_query($query);
 }
 

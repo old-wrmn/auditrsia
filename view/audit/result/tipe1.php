@@ -87,9 +87,19 @@ Menyatakan dengan sesungguhnya bahwa temuan/hasil survei sesuai dengan keadaan y
 </div>
 <br><br><br>
 <div class="row">
-    <div class="col">
-            __________________
-    </div>
+<?php   
+    if($_SESSION['user']['pegawai_jabatan']==4){ 
+        $pj=pg_fetch_array(get_tipe($_SESSION['user']['pegawai_nomor']))?>
+        <div class="col">
+            <u><?=ucwords($pj['pegawai_nama'])?><br></u>
+            <?=$record['pegawai_nomor']?>
+        </div>
+    <?php }
+    else {?>
+        <div class="col">
+        __________________
+        </div>
+    <?php }?>
     <div class="col">
             <u><?=ucwords(namaorg($record['pegawai_nomor'], "nama"))?><br></u>
             <?=$record['pegawai_nomor']?>

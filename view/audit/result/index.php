@@ -1,6 +1,9 @@
 <?php
 include ('../../../control/main.php'); 
-$record=pg_fetch_array(get_record(null,$_GET['id']));?><!DOCTYPE html>
+$record=pg_fetch_array(get_record(null,$_GET['id']));
+?>
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">

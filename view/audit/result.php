@@ -18,7 +18,10 @@
     <tbody>
         <?php 
         $c=1;
-        $query=get_record(null,null);
+        $query=get_record();
+        if($_SESSION['user']['pegawai_jabatan']==4){
+            $query=get_record(null,null,$_SESSION['user']['pegawai_nomor']);    
+        }
         while ($recordan=pg_fetch_array($query)) {
         ?>
         <tr>

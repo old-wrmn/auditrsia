@@ -267,6 +267,9 @@ function get_tipe($pegawai=null){
 		pegawai
 	on
 		pegawai.pegawai_nomor=tiperuang.pegawai_nomor";
+		if(!is_null($pegawai)){
+			$tipe.=" where pegawai.pegawai_nomor=$pegawai";
+		}
 	return pg_query($tipe);
 }
 
@@ -295,14 +298,14 @@ function get_unit($pegawai=null,$audit=null){
 }
 
 //select record
-function get_record($pegawai=null,$id=null){
+function get_record($pegawai=null,$id=null,$pj=null){
 	$record="SELECT 
             *
         from 
             record
 		inner join
 			audit
-			on audit.audit_id=record.audit_id
+				on audit.audit_id=record.audit_id
 		inner join 
 			pegawai
 				on pegawai.pegawai_nomor=record.pegawai_nomor";
@@ -321,6 +324,18 @@ function get_record($pegawai=null,$id=null){
 		" where 
 			record_id='".$id."'";
 	}	
+	else if(!is_null($pj)){
+	$record.=
+		" 
+		inner join 
+			ruang 
+				on ruang.ruang_nama=record.ruang_nama
+		inner join 
+			tiperuang 
+				on tiperuang.tiperuang_nama=ruang.tiperuang_nama
+		where 
+			tiperuang.pegawai_nomor=".$pj;
+	}
 	return pg_query($record);
 }
 

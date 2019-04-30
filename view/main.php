@@ -41,7 +41,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-1">
                         <div class="logo">
-                            <a href="../auditrsia"><img src="assets/images/icon/logo2.png" alt="logo">
+                            <a href="../"><img src="assets/images/icon/logo2.png" alt="logo">
                         </div>
                     </div>
                     <div class="col-md-2">

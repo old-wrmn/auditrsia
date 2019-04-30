@@ -83,7 +83,7 @@
                                     if(!isset($_GET['view'])){
                                         echo "class='active'";
                                     }?>>
-                                        <a href="../auditrsia"><i class="ti-home"></i><span>Beranda</span></a>
+                                        <a href="../"><i class="ti-home"></i><span>Beranda</span></a>
                                     </li>
                                     <li
                                     <?php
